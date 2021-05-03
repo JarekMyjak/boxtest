@@ -1,23 +1,36 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
 import './App.css';
+import { Circle } from './Circle';
+
+
 
 function App() {
+
+  const [CircleList, setCircleList] = useState([]);
+
+  const handleAddCircle = () => {
+    const nextId = () => CircleList.length === 0 ? 0 : CircleList[CircleList.length-1].key + 1;
+    const nextCircle = {
+      key: nextId(),
+      text: "lorem ipsum"
+    }
+    setCircleList([...CircleList, nextCircle]);
+  }
+
+  const handleDeleteCircle = () => {
+    const newList = CircleList.slice(0,-1);
+    setCircleList(newList);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="buttonContainer">
+        <button onClick={handleAddCircle}>dodaj nowe kółko</button>
+        <button onClick={handleDeleteCircle}>usuń ostatnie kółko</button>
+      </div>
+      <div className="circleContainer">
+        {CircleList.map((circle) => <Circle key={circle.key}>{circle.text}</Circle>)}
+      </div>
     </div>
   );
 }
